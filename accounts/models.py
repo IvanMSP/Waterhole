@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
 # Create your models here.
+from waterhole.models import WaterHole
 
 class User(AbstractUser):
 	is_client = models.BooleanField(default=False)
@@ -24,18 +25,29 @@ class User(AbstractUser):
 		db_table = 'auth_user'
 
 
+
+
 class ClientProfile(models.Model):
-	user_client = models.OneToOneField(User, related_name='clientprofile')
+	user_client = models.OneToOneField(User, related_name='clientprofile', on_delete = models.CASCADE)
+	waterhole_client = models.ForeignKey(WaterHole, related_name='waterholeclient')
 	phone_number = models.CharField(max_length=10, blank=True, null=True)
 	photo_avatar = models.ImageField(upload_to ='avatar-client', blank=True,null=True)
 
 	def __str__(self):
 		return self.user_client.username
 
-class AdminWaterHoleProfile(models.Model):
-	user_admin_waterhole = models.OneToOneField(User, related_name='adminwaterhole')
+class WaterHoleProfile(models.Model):
+	user_admin_waterhole = models.OneToOneField(User, related_name='adminwaterhole', on_delete = models.CASCADE)
+	waterhole_admin = models.ForeignKey(WaterHole, related_name='waterholadmin')
 	phone_number = models.CharField(max_length=10, blank=True, null=True)
 	photo_avatar = models.ImageField(upload_to ='avatar-client', blank=True,null=True)
 
 	def __str__(self):
 		return self.user_admin_waterhole.username
+
+	def get_clients(self):
+		clients_waterhole = ClientProfile.objects.filter(waterhole_client = self.waterhole_admin)
+		return clients_waterhole
+
+
+

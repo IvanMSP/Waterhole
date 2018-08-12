@@ -40,11 +40,13 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-
+    'bootstrapform',
+    'crispy_forms',
 ]
 
 LOCAL_APPS = [
     'accounts',
+    'waterhole',
 ]
 
 INSTALLED_APPS = DJANGO_APPS +THIRD_PARTY_APPS + LOCAL_APPS
@@ -109,7 +111,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -134,7 +135,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
 MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
 MEDIA_URL = '/media/'
 
-
+CRISPY_TEMPLATE_PACK = 'bootstrap'
 
 #User Model
 AUTH_USER_MODEL ='accounts.User'
