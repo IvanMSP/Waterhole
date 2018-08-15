@@ -2,8 +2,9 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic import View
 from django.utils.decorators  import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
-from .forms import UserRegistrationForm,ClientRegistrationForm,ClientRegistration
+from .forms import UserRegistrationForm,ClientRegistrationForm,ClientRegistration,UserEditForm,AdminEditForm
 from waterhole.models import WaterHole
 from .models import ClientProfile
 
@@ -12,15 +13,13 @@ class ProfileView(View):
 	@method_decorator(login_required)
 	def get(self,request):
 		profile = None
-		#form_u = UserEditForm(instance = request.user)
+		form_u = UserEditForm(instance = request.user)
 		form_p = None
 		template_name = "registration/profile.html"
 		user = request.user
 		if user.is_admin_waterhole:
 			profile = user.get_adminwaterhole_profile()
-			#form_p = AdminBussinessEditForm(instance = profile)
-			
-
+			form_p = AdminEditForm(instance = profile)
 		elif user.is_client:
 			profile = user.get_client_profile()
 			form_p = ClientEditForm(instance = profile)
@@ -29,31 +28,70 @@ class ProfileView(View):
 			profile = user.get_adminsystem_profile()
 			form_p = AdminBussinessRegistrationForm(instance = profile)
 		context = {
+			"profileclass":"active",
 			'user':user,
 			'profile':profile,
 			'form_u': form_u,
 			'form_p':form_p,
 		}
+
 		return render(request,template_name,context)
+
+	def post(self,request):
+		template_name = 'registration/profile.html'
+		user = request.user
+		form_u = UserEditForm(instance = request.user, data = request.POST)
+		profile = None
+		form_p = None
+		if user.is_admin_waterhole:
+			profile = user.get_adminwaterhole_profile()
+			form_p = AdminEditForm(instance = profile, data= request.POST,files = request.FILES)
+		else:
+			profile = user.get_client_profile()
+			form_p = ClientEditForm(instance = profile, data = request.POST, files = request.FILES)
+		if form_u.is_valid() and form_p.is_valid():
+			form_u.save()
+			form_p.save()
+			messages.success(self.request, 'Perfil Actualizado correctamente!')
+			return redirect('account:profile')
+		else:
+			context = {
+				"profileclass":"active",
+				'user':user,
+				'profile':profile,
+				'form_u': form_u,
+				'form_p':form_p,
+			}
+			print(context.profileclass)
+			return render(request,template_name,context)
 
 
 #VIEWS PARA MODULO DE CLIENTS
 class MainClient(View):
+	@method_decorator(login_required)
 	def get(self,request):
 		template_name = 'account/main-client.html'
+		user = request.user
+		great = False
+		admin_waterhole = None
+		if user.is_admin_waterhole:
+			great = True
+			admin_waterhole= user.get_adminwaterhole_profile()
 		context = {
+			'great':great,
+			'admin_waterhole':admin_waterhole,
 			"mainclient":"active",
 		}
-		print(context)
+		
 		return render(request,template_name,context)
 
-class ClientRegistration(View):
+class RegistryClient(View):
 	@method_decorator(login_required)
 	def get(self,request):
 		template_name = 'account/registry-client.html'
 		form = UserRegistrationForm()
 		form_client =ClientRegistration()
-		print(form_client)
+		print(form)
 		context = {
 			"mainclient":"active",
 			'form':form,

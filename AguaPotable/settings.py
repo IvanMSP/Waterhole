@@ -41,11 +41,10 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'bootstrapform',
-    'crispy_forms',
 ]
 
 LOCAL_APPS = [
-    'accounts',
+    'account',
     'waterhole',
 ]
 
@@ -135,7 +134,11 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
 MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
 MEDIA_URL = '/media/'
 
-CRISPY_TEMPLATE_PACK = 'bootstrap'
+#Login Redireect
+from django.core.urlresolvers import reverse_lazy
+
+LOGIN_REDIRECT_URL = reverse_lazy('account:profile')
+LOGIN_URL = reverse_lazy('account:login')
 
 #User Model
-AUTH_USER_MODEL ='accounts.User'
+AUTH_USER_MODEL ='account.User'

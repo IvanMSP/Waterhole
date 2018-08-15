@@ -15,9 +15,19 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
-from accounts import urls as accountsURLs
+from django.views.static import serve
+from django.conf import settings
+from django.conf.urls.static import static
+
+
+from account import urls as accountURLs
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^account/', include(accountsURLs, namespace="account")),
+    url(r'^account/', include(accountURLs, namespace="account")),
+
+ 	url(
+        regex=r'^media/(?P<path>.*)$',
+        view=serve,
+        kwargs={'document_root': settings.MEDIA_ROOT}),   
 ]

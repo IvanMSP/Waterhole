@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap%}
+{% block content %}
+
+<div class="content">
+	<a href="{% url 'account:registry-client' %}">
+		<button class="btn btn-outline-primary btn-round">
+	  		<i class="fas fa-pen"></i> Registrar Cliente
+		</button>
+	</a>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title"> Clientes</h4>
+      </div>
+      <div class="card-body">
+        {% if great %}
+        <div class="table-responsive">
+          <table class="table">
+            <thead class=" text-primary">
+              <th>
+                Foto
+              </th>
+              <th>
+                Nombre
+              </th>
+              <th>
+                Apellidos
+              </th>
+              <th>
+                Email
+              </th>
+              <th class="text-right">
+                
+              </th>
+            </thead>
+            <tbody>
+            {% for client in admin_waterhole.get_clients  %}
+              <tr>
+                <td>
+                  <img src="{{ client.photo_avatar.url }}" class="img-responsive img-circle" width="50"></img>
+                </td>
+                <td>
+                  {{client.user_client.first_name}} 
+                </td>
+                <td>
+                  {{client.user_client.last_name}}
+                </td>
+                <td>
+                  {{client.user_client.email}}
+                </td>
+                <td class="text-right">
+                  <a href="" class="btn btn-info">Detalle</a>
+                </td>
+              </tr>
+            {% endfor %}  
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <h3>Necesitas ser administrador</h3>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{%endblock content%}

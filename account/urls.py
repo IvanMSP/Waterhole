@@ -8,6 +8,7 @@ urlpatterns = [
 	url(r'^main/$', views.MainView.as_view(), name = "main"),
 	#URLS the module clients
 	url(r'^main-client/$', views.MainClient.as_view(), name = "main-client"),
-	url(r'^registry-client/$', views.ClientRegistration.as_view(), name = "registry-client"),
+	url(r'^registry-client/$', views.RegistryClient.as_view(), name = "registry-client"),
 	url(r'^login/$', login, name = "login"),
+	url(r'^logout-then-login/$', logout_then_login, name='logout-then-login'),
 ]

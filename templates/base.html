@@ -40,8 +40,15 @@
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
+          {% if request.user.is_authenticated %}
+          <li class="{{profileclass}}">
+            <a href="{% url 'account:profile' %}">
+              <i class="fas fa-address-card"></i>
+              <p>Perfíl</p>
+            </a>
+          </li>
           <li class="{{dashboard}}">
-            <a href="{% url 'account:login' %}">
+            <a href="#">
               <i class="fas fa-columns"></i>
               <p>Dashboard</p>
             </a>
@@ -70,7 +77,21 @@
               <p>Egresos</p>
             </a>
           </li>
-        </ul>
+          <li>
+            <a href="{% url 'account:logout-then-login' %}">
+              <i class="fas fa-sign-out-alt"></i>
+              <p>Cerrar Sesión</p>
+            </a>
+          </li>
+          {% else %}
+          <li>
+            <a href="{% url 'account:login' %}">
+              <i class="fas fa-file-invoice-dollar"></i>
+              <p>Iniciar Sesión</p>
+            </a>
+          </li>        
+          {% endif %} 
+        </ul> 
       </div>
     </div>
 
@@ -93,7 +114,7 @@
             <span class="navbar-toggler-bar navbar-kebab"></span>
             <span class="navbar-toggler-bar navbar-kebab"></span>
           </button>
-          <div class="collapse navbar-collapse justify-content-end" id="navigation">
+          <!-- <div class="collapse navbar-collapse justify-content-end" id="navigation">
             <form>
               <div class="input-group no-border">
                 <input type="text" value="" class="form-control" placeholder="Search...">
@@ -135,7 +156,7 @@
                 </a>
               </li>
             </ul>
-          </div>
+          </div> -->
         </div>
       </nav>
   

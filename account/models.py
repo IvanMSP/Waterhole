@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
 # Create your models here.
 from waterhole.models import WaterHole
+import uuid
 
 class User(AbstractUser):
 	is_client = models.BooleanField(default=False)
@@ -12,7 +13,7 @@ class User(AbstractUser):
 	def get_adminwaterhole_profile(self):
 		admin_waterhole_profile = None
 		if hasattr(self,'adminwaterhole'):
-			admin_waterhole_profile = self.adminwaterholeprofile
+			admin_waterhole_profile = self.adminwaterhole
 		return admin_waterhole_profile
 
 	def get_client_profile(self):
@@ -30,6 +31,7 @@ class User(AbstractUser):
 class ClientProfile(models.Model):
 	user_client = models.OneToOneField(User, related_name='clientprofile', on_delete = models.CASCADE)
 	waterhole_client = models.ForeignKey(WaterHole, related_name='waterholeclient')
+	register_number = models.UUIDField(primary_key=True,default = uuid.uuid4, editable=False)
 	phone_number = models.CharField(max_length=10, blank=True, null=True)
 	photo_avatar = models.ImageField(upload_to ='avatar-client', blank=True,null=True)
 
