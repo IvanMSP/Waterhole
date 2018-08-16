@@ -54,7 +54,7 @@
             </a>
           </li>
           <li class="{{mainclient}}">
-            <a href="{% url 'account:main-client' %}">
+            <a href="{% url 'account:list-client' %}">
               <i class="fas fa-users"></i>
               <p>Clientes</p>
             </a>
@@ -208,7 +208,11 @@
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <script src=" {% static 'js/paper-dashboard.min.js' %}" type="text/javascript"></script>
 
-
+  <script type="text/javascript">
+    setTimeout(function() {
+      $('#message').hide()
+    }, 5000);
+  </script>
 </body>
 
 </html>

@@ -4,11 +4,11 @@ from django.utils.decorators  import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from .forms import UserRegistrationForm,ClientRegistrationForm,ClientRegistration,UserEditForm,AdminEditForm
+from .forms import UserRegistrationForm,ClientRegistrationForm,ClientRegistration,UserEditForm,AdminEditForm,ClientEditForm
 from waterhole.models import WaterHole
-from .models import ClientProfile
+from .models import User,ClientProfile,WaterHoleProfile
 
-
+#Vista para los perfiles
 class ProfileView(View):
 	@method_decorator(login_required)
 	def get(self,request):
@@ -67,10 +67,10 @@ class ProfileView(View):
 
 
 #VIEWS PARA MODULO DE CLIENTS
-class MainClient(View):
+class ListClient(View):
 	@method_decorator(login_required)
 	def get(self,request):
-		template_name = 'account/main-client.html'
+		template_name = 'account/list-client.html'
 		user = request.user
 		great = False
 		admin_waterhole = None
@@ -85,13 +85,29 @@ class MainClient(View):
 		
 		return render(request,template_name,context)
 
+class DetailClient(View):
+	@method_decorator(login_required)
+	def get(self,request,id_client,username_client):
+		template_name = 'account/detail-client.html'
+		client = get_object_or_404(User, id = id_client, username = username_client)
+		client_profile = client.get_client_profile()
+		form_client = UserEditForm(instance = client)
+		form_client_profile = ClientRegistration(instance = client_profile)
+		context = {
+			"mainclient":"active",
+			'client':client,
+			'client_profile':client_profile,
+			'form_client':form_client,
+			'form_client_profile':form_client_profile,
+		}
+		return render(request,template_name,context)
+
 class RegistryClient(View):
 	@method_decorator(login_required)
 	def get(self,request):
 		template_name = 'account/registry-client.html'
 		form = UserRegistrationForm()
 		form_client =ClientRegistration()
-		print(form)
 		context = {
 			"mainclient":"active",
 			'form':form,
@@ -100,32 +116,36 @@ class RegistryClient(View):
 		return render(request, template_name, context)
 
 
-	# def post(self,request):
-	# 	template_name = 'account/registry-client.html'
-	# 	form = UserRegistrationForm(request.POST)
-	# 	form_client = ClientRegistration(request.POST, request.FILES)
-	# 	if form.is_valid() and form_client.is_valid():
-	# 		new_user = form.save(commit=False)
-	# 		new_user.is_client=True
-	# 		new_user.save()
+	def post(self,request):
+		template_name = 'account/registry-client.html'
+		form = UserRegistrationForm(request.POST)
+		form_client = ClientRegistration(request.POST, request.FILES)
+		if form.is_valid() and form_client.is_valid():
+			new_user = form.save(commit=False)
+			new_user.is_client=True
+			new_user.save()
 
-	# 		new_profile = form_client.save(commit=False)
-	# 		client = form_client.cleaned_data
-	# 		waterhole = client['waterhole_select']
-	# 		new_profile.user_client = new_user
-	# 		waterhole = get_object_or_404(WaterHole, id = waterhole)
-	# 		new_profile.save()
-	# 		new_profile.waterhole_client.add(waterhole)
-	# 		new_profile.save()
-	# 		return redirect('account:main')
-	# 	else:
-	# 		form = UserRegistrationForm()
-	# 		form_client = ClientRegistrationForm()
-	# 		context ={
-	# 			'form':form,
-	# 			'form_client': form_client,
-	# 		}
-	# 		return render(request,template_name,context)
+			new_profile = form_client.save(commit=False)
+			new_client = form_client.cleaned_data
+			waterhole = new_client['waterhole_select']
+			new_profile.user_client = new_user
+			waterhole = get_object_or_404(WaterHole, id = waterhole)
+			print(waterhole)
+			new_profile.waterhole_client = waterhole
+			new_profile.save()
+			messages.success(self.request, 'Cliente Registrado!')
+			print(messages)
+			return redirect('account:list-client')
+
+		else:
+			form = UserRegistrationForm()
+			form_client = ClientRegistration()
+			context ={
+				"mainclient":"active",
+				'form':form,
+				'form_client': form_client,
+			}
+			return render(request,template_name,context)
 
 
 #Se tiene que borrar solo es de prueba ACUERDATE CABRON

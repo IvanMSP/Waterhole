@@ -6,10 +6,10 @@ from waterhole.models import WaterHole
 
 
 class UserRegistrationForm(forms.ModelForm):
-	username = forms.CharField(label = "Nombre de Usuario", widget = forms.TextInput(attrs = {'placeholder':"Usuario",}))
-	email = forms.CharField(label = "Correo", widget = forms.TextInput(attrs = {'placeholder':"Correo"}))
-	first_name = forms.CharField(label="Nombre:",widget=forms.TextInput(attrs={'placeholder':"Nombre", }))
-	last_name = forms.CharField(label="Apellidos:",widget=forms.TextInput(attrs={'placeholder':"Apellidos", }))
+	username = forms.CharField(label = "Nombre de Usuario*", widget = forms.TextInput(attrs = {'placeholder':"Usuario",}))
+	email = forms.CharField(label = "Correo*", widget = forms.TextInput(attrs = {'placeholder':"Correo"}))
+	first_name = forms.CharField(label="Nombre:*",widget=forms.TextInput(attrs={'placeholder':"Nombre", }))
+	last_name = forms.CharField(label="Apellidos:*",widget=forms.TextInput(attrs={'placeholder':"Apellidos", }))
 	#password = forms.CharField(label="Contraseña", widget=forms.PasswordInput(attrs={'placeholder':"Contraseña"}))
 	#password2 = forms.CharField(label="Repita contraseña", widget=forms.PasswordInput(attrs={'placeholder':"Repita Contraseña"}))
 
@@ -17,7 +17,7 @@ class UserRegistrationForm(forms.ModelForm):
 
 	class Meta:
 		model = User
-		fields = ('username','email')
+		fields = ('username','email','first_name','last_name')
 		help_texts = {'username':None,}
 
 	def clean_password2(self):
@@ -65,6 +65,16 @@ class ClientRegistration(ClientRegistrationForm):
 
 	class Meta(ClientRegistrationForm.Meta):
 		fields = ClientRegistrationForm.Meta.fields + ('waterhole_select',)
+
+class ClientEditForm(forms.ModelForm):
+	phone_number = forms.CharField(label="Numero celular:",widget=forms.TextInput(attrs={'placeholder':"Celular",}))
+	photo_avatar = forms.ImageField(label="Foto del Cliente:", required=False, widget=MyClearebleFileInput)
+
+	class Meta:
+		model = ClientProfile
+		fields = {'phone_number','photo_avatar'}
+
+
 
 #Formularios para Administradores
 class AdminEditForm(forms.ModelForm):
