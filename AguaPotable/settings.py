@@ -40,11 +40,12 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-
+    'bootstrapform',
 ]
 
 LOCAL_APPS = [
-    'accounts',
+    'account',
+    'waterhole',
 ]
 
 INSTALLED_APPS = DJANGO_APPS +THIRD_PARTY_APPS + LOCAL_APPS
@@ -109,7 +110,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -134,7 +134,11 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
 MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
 MEDIA_URL = '/media/'
 
+#Login Redireect
+from django.core.urlresolvers import reverse_lazy
 
+LOGIN_REDIRECT_URL = reverse_lazy('account:profile')
+LOGIN_URL = reverse_lazy('account:login')
 
 #User Model
-AUTH_USER_MODEL ='accounts.User'
+AUTH_USER_MODEL ='account.User'

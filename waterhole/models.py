@@ -11,5 +11,6 @@ class WaterHole(models.Model):
 	tel_cel_two = models.CharField(max_length = 10, blank=True, null=True)
 	email = models.EmailField(blank=True, null=True)
 
+
 	def __str__(self):
 		return self.name

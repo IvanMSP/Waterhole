@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load bootstrap%}
+{% load static %}
+{% block content %}
+
+<div class="content">
+	<div class="col-md-8">
+		<div class="card card-user">
+		  <div class="card-header">
+		    <h5 class="card-title">Registrar Cliente</h5>
+		  </div>
+		  <div class="card-body">
+		    <form  action="." method="post"  enctype='multipart/form-data'>
+		      	{% csrf_token %}
+		        {{ form|bootstrap }}
+		        {{form_client|bootstrap}}
+			    <div class="text-right">
+			        <input type="submit" name="guardar" value="Registrar" class="btn btn-success">
+			    </div>
+		    </form>
+		  </div>
+		</div>
+	</div>
+</div>
+{%endblock content%}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap%}
+{% block content %}
+
+<div class="content">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="card-header text-center">
+          <h5 class="card-title">Iniciar Sesión</h5>
+        </div>
+        <div class="card-body">
+          {% if request.user.is_authenticated %}
+          <div class="alert alert-success" role="alert">
+            Ya estas autenticado en el sistema
+          </div>
+          {% else %}
+          <form action="{% url 'account:login' %}" method="post" class="login">
+            {% csrf_token %}
+            {{ form|bootstrap}}
+            <input type="hidden" name="next" value="{{ next }}">
+            <div class="text-center">
+              <br><input type="submit" name="submit" value=" Ingresar " class="btn-lg btn-danger">
+            </div>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card card-user">
+        <div class="image">
+          <img src="{% static 'img/damir-bosnjak.jpg' %}" alt="...">
+        </div>
+        <div class="card-body">
+          <div class="author">
+            <a href="#">
+              <img class="avatar border-gray" src="{% static 'img/damir-bosnjak.jpg' %}" alt="...">
+              <h5 class="title">Sistema de Administración  Pozo Cozotlán A.C</h5>
+            </a>
+            <p class="description">
+              Av. Jorge Jiménez Cantú #40, Santa María Cozotlan, Teotihuacán,Estado de México.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+
+{% endblock content %}
