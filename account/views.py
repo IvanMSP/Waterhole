@@ -130,11 +130,14 @@ class RegistryClient(View):
 			waterhole = new_client['waterhole_select']
 			new_profile.user_client = new_user
 			waterhole = get_object_or_404(WaterHole, id = waterhole)
+
 			print(waterhole)
 			new_profile.waterhole_client = waterhole
 			new_profile.save()
+
 			messages.success(self.request, 'Cliente Registrado!')
 			print(messages)
+
 			return redirect('account:list-client')
 
 		else:
@@ -145,6 +148,8 @@ class RegistryClient(View):
 				'form':form,
 				'form_client': form_client,
 			}
+			messages.error(self.request,'Error de mensaje')
+			print(messages)
 			return render(request,template_name,context)
 
 

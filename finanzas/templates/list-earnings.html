@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap%}
+{% block content %}
+
+
+<div class="content">
+	
+	<a href="{% url 'finance:registry-earning' %}">
+	    <button class="btn btn-outline-primary btn-round">
+	        <i class="fas fa-pen"></i> Nuevo Ingreso
+	    </button>
+	</a>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title"> Ingresos</h4>
+        <!--{% if messages %}
+          <div id="message" class="messages alert alert-success">
+            {% for message in messages %}
+            <h3>{{message}}</h3>
+            {% endfor %}
+          </div>
+        {% endif %}-->
+      </div>
+      <div class="card-body">
+        
+        <div class="table-responsive">
+          <table class="table">
+            <thead class=" text-primary">
+              <th>
+              	# registro
+              </th>
+              <th>
+                Ingreso
+              </th>
+              <th>
+                Costo
+              </th>
+              <th>
+              	Fecha
+              </th>
+              <th>
+                Admin
+              </th>
+            </thead>
+            <tbody>
+            {% for e in earnigns  %}
+              <tr>
+              	<td>
+              	  {{e.number_registry}}
+              	</td>
+                <td>
+                  {{e.subject}} 
+                </td>
+                <td>
+                  $ {{e.quantity}} MXN
+                </td>
+                <td>
+                	{{e.date}}
+                </td>
+                <td>
+                	{{e.admin_waterhole_earning}}
+                </td>
+              </tr>
+            {% endfor %}  
+            </tbody>
+          </table>
+        </div>
+    
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+{%endblock content%}
