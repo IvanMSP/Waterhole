@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load humanize %}
 {% load bootstrap%}
 {% block content %}
 
@@ -16,6 +17,7 @@
     <div class="card">
       <div class="card-header">
         <h4 class="card-title"> Ingresos</h4>
+        <p>Total de Ingresos: <strong> $ {{total|floatformat:2|intcomma}}</strong></p>
         <!--{% if messages %}
           <div id="message" class="messages alert alert-success">
             {% for message in messages %}
@@ -33,7 +35,7 @@
               	# registro
               </th>
               <th>
-                Ingreso
+                Concepto
               </th>
               <th>
                 Costo
