@@ -28,7 +28,7 @@
       <div class="logo">
         <a href="http://www.creative-tim.com" class="simple-text logo-mini">
           <div class="logo-image-small">
-            <img src="{% static 'img/logo-small.png' %} ">
+            <img src="{% static 'img/logo-pc.png' %} ">
           </div>
         </a>
         <a href="http://www.creative-tim.com" class="simple-text logo-normal">
@@ -47,12 +47,12 @@
               <p>Perfíl</p>
             </a>
           </li>
-          <li class="{{dashboard}}">
+          <!-- <li class="{{dashboard}}">
             <a href="#">
               <i class="fas fa-columns"></i>
               <p>Dashboard</p>
             </a>
-          </li>
+          </li> -->
           <li class="{{mainclient}}">
             <a href="{% url 'account:list-client' %}">
               <i class="fas fa-users"></i>
@@ -65,14 +65,14 @@
               <p>Reportes</p>
             </a>
           </li>
-          <li>
-            <a href="#">
+          <li class="{{earningactive}}">
+            <a href="{% url 'finance:ingresos' %}">
               <i class="fas fa-hand-holding-usd"></i>
               <p>Ingresos</p>
             </a>
           </li>
-          <li>
-            <a href="#">
+          <li class="{{outflow}}">
+            <a href="{% url 'finance:egresos'%}">
               <i class="fas fa-file-invoice-dollar"></i>
               <p>Egresos</p>
             </a>
@@ -212,7 +212,7 @@
   <script type="text/javascript">
     setTimeout(function() {
       $('#message').hide()
-    }, 5000);
+    }, 1000);
   </script>
 </body>
 

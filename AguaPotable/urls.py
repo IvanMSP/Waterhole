@@ -21,10 +21,12 @@ from django.conf.urls.static import static
 
 
 from account import urls as accountURLs
+from finanzas import urls as finanzasURLs
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^account/', include(accountURLs, namespace="account")),
+    url(r'^finance/', include(finanzasURLs, namespace="finance")),
 
  	url(
         regex=r'^media/(?P<path>.*)$',

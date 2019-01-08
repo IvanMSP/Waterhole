@@ -1,0 +1,57 @@
+{%load static%}
+
+<html>
+	<body>
+
+		<div class="logos_axio"> 
+			<img src="{% static 'img/logo-pc.png' %}" alt="" style="width: 60px; ">
+		</div>
+
+		<div class="logos_escuela">
+			<img src="#" alt="" style="width: 80px; ">
+		</div>
+
+		<div class="cabecera">	
+			<p>POZO COZOTLAN A.C.</p>
+			<p class="small">Sistema Comunitario de Agua potable</p>
+			<hr>
+		</div>
+		
+		<div class="waterhole">
+			<p><strong>Dirección:</strong> {{waterhole.address}}</p>	
+			<p><strong>Tel.Cel:</strong> {{waterhole.tel_cel_one}}</p>
+			<p><strong>Tel.Cel:</strong> {{waterhole.tel_cel_two}}</p>
+			<p><strong>Email:</strong> {{waterhole.email}}</p>
+		</div>
+		<br>
+		<br>
+		<div class="text">
+			<h3><strong>Contrato del Servicio de Agua Potable</strong></h3>
+			<p><strong>Fecha:</strong> {{contract.date_register|date:"d/F/Y"}}</p>
+			<p><strong>Numero de registro:</strong> {{contract.number_register}}</p>
+			<p><strong>Zona: </strong> {{contract.zone_waterhole}}</p>
+
+			<p><strong>Nombre de usuario:</strong> {{client_profile.user_client.first_name}} {{client_profile.user_client.last_name}}</p>
+			<p><strong>Dirección: </strong>{{adress.street}},#{{adress.interior_number}},{{adress.ext_number}},{{adress.neighborhood}},{{adress.cp}},{{adress.delegation}},{{adress.state}}</p>
+		</div>
+
+		<div class="text">
+			<h3><strong>Declaraciones</strong></h3>
+			<p>
+				PRIMERO.- EL AYUNTAMIENTO A TRAVES DE SU REPRESENTANTE LEGAL DEBIDAMENTE AUTORIZADO MEDIANTE LA SEGUNDA
+				SESION DE AYUNTAMIENTO DE FECHA 28 DE ENERO DEL 2005, ASI MISMO, MEDIANTE NOMBRAMIENTO DEL DIA 08 DE JUNIO DEL
+				AÑO EN CURSO, MANIFIESTA QUE TIENE LA CAPACIDAD DE CONTRATAR Y OBLIGARSE EN LOS TERMINOS DEL ARTICULO 52 DE LA
+				LEY DEL GOBIERNO Y LA ADMINISTRACION PUBLICA MUNICIPAL DEL ESTADO DE JALISCO, DE MANERA QUE DICHA FACULTAD
+				EMANA DE LO QUE CONSAGRA EL ARTICULO 115 DE LA CONSTITUCION POLITICA DE LOS ESTADOS UNIDOS MEXICANOS, ASI COMO
+				EN EL ARTICULO 73 DE LA CONSTITUCION POLITICA DEL ESTADO DE JALISCO, A FAVOR DE LOS MUNICIPIOS.
+				SEGUNDO.- ADEMAS MANIFIESTA QUE EL AYUNTAMIENTO TIENE LA OBLIGACION DE PROPORCIONAR A TODOS LOS HABITANTES DE
+				ESTE MUNICIPIO EL SERVICIO DE AGUA POTABLE, YA SEA SI ES CASA HABITACION O COMERCIO EN FORMA Y TERMINOS QUE MAS
+				ADELANTE SE PRECISA.
+				TERCERO.- POR SU PARTE EL USUARIO CUYO NOMBRE Y DEMAS DATOS GENERALES HAN QUEDADO PRESISADOS EN EL PROEMIO
+				DEL PRESENTE CONVENIO, MANIFIESTA QUE ES SU VOLUNTAD CELEBRAR EL PRESENTE CONVENIO, YA QUE REQUIERE DE LA
+				PRESTACION DEL SERVICIO DE AGUA POTABLE EN LOS TERMINOS ANTES DESCRITOS Y EN EL DOMICILIO INDICADO.CUARTO.-
+				AMBAS PARTES MANIFIESTAN SU ABSOLUTA CONFORMIDAD CON LA CELEBRACION DEL PRESENTE CONVENIO, POR ELLO SE
+				OBLIGAN EN TERMINOS DE LAS SIGUIENTES:</p>
+		</div>
+	</body>
+</html>

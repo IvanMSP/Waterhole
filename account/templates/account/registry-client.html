@@ -3,7 +3,7 @@
 {% load static %}
 {% block content %}
 
-<div class="content">
+<!--<div class="content">
 	<div class="col-md-8">
 		<div class="card card-user">
 		  <div class="card-header">
@@ -21,5 +21,52 @@
 		  </div>
 		</div>
 	</div>
+</div>-->
+
+<div class="content">
+	<div class="col-md-8">
+		<div class="card card-user">
+			<div class="card-header card-header-info">
+					<!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+					<div class="nav-tabs-navigation">
+							<div class="nav-tabs-wrapper">
+									<ul class="nav nav-tabs" data-tabs="tabs">
+											<li class="nav-item">
+													<a class="nav-link active" href="#home" data-toggle="tab">Datos Personales</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link" href="#adress" data-toggle="tab">Dirección</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link" href="#updates" data-toggle="tab">Datos del contrato</a>
+										</li>
+									</ul>
+							</div>
+					</div>
+			</div><div class="card-body ">
+					<div class="tab-content">
+							<div class="tab-pane active" id="home">
+								<form  action="." method="post"  enctype='multipart/form-data'>
+									{% csrf_token %}
+									{{ form|bootstrap }}
+									{{form_client|bootstrap}}
+							</div>
+							<div class="tab-pane" id="updates">
+									{{form_contract|bootstrap}}
+							</div>
+							<div class="tab-pane" id="adress">
+									{{form_adress|bootstrap}}
+							</div>
+						
+					</div>
+					<div class="text-right">
+						<input type="submit" name="guardar" value="Registrar" class="btn btn-success">
+					</div>
+				</form>
+				
+			</div>
+		</div>
+	</div>
 </div>
+
 {%endblock content%}

@@ -13,4 +13,7 @@ urlpatterns = [
 	#Urls login and logout
 	url(r'^login/$', login, name = "login"),
 	url(r'^logout-then-login/$', logout_then_login, name='logout-then-login'),
+
+	#Pdf Urls
+	url(r'^pdf-contract/pdf/(?P<id_client>\w+)/$', views.PdfSection.contract_pdf, name='pdf_contract'),
 ]

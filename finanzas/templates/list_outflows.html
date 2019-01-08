@@ -1,78 +1,80 @@
 {% extends "base.html" %}
 {% load static %}
+{% load humanize %}
 {% load bootstrap%}
 {% block content %}
 
-<div class="content">
-	<a href="{% url 'account:registry-client' %}">
-		<button class="btn btn-outline-primary btn-round">
-	  		<i class="fas fa-pen"></i> Registrar Cliente Nuevo
-		</button>
-	</a>
 
+<div class="content">
+	
+	<a href="{% url 'finance:registry-outflow' %}">
+	    <button class="btn btn-outline-primary btn-round">
+	        <i class="fas fa-pen"></i> Nuevo Egreso
+	    </button>
+	</a>
 <div class="row">
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title"> Clientes</h4>
-        {% if messages %}
+        <h4 class="card-title"> Egresos</h4>
+        <p>Total de Egresos: <strong> $ {{total|floatformat:2|intcomma}}</strong></p>
+        <!--{% if messages %}
           <div id="message" class="messages alert alert-success">
             {% for message in messages %}
             <h3>{{message}}</h3>
             {% endfor %}
           </div>
-        {% endif %}
+        {% endif %}-->
       </div>
       <div class="card-body">
-        {% if great %}
+        
         <div class="table-responsive">
           <table class="table">
             <thead class=" text-primary">
               <th>
-                Foto
+              	# registro
               </th>
               <th>
-                Nombre
+                Concepto
               </th>
               <th>
-                Apellidos
+                Costo
               </th>
               <th>
-                Email
+              	Fecha
               </th>
-              <th class="text-right">
-                Ver Detalle
+              <th>
+                Admin
               </th>
             </thead>
             <tbody>
-            {% for client in admin_waterhole.get_clients  %}
+            {% for o in outflows  %}
               <tr>
+              	<td>
+              	  {{o.number_registry}}
+              	</td>
                 <td>
-                  <img src="{{ client.photo_avatar.url }}" class="img-responsive img-circle" width="50"></img>
+                  {{o.subject}} 
                 </td>
                 <td>
-                  {{client.user_client.first_name}} 
+                  $ {{o.quantity}} MXN
                 </td>
                 <td>
-                  {{client.user_client.last_name}}
+                	{{o.date}}
                 </td>
                 <td>
-                  {{client.user_client.email}}
-                </td>
-                <td class="text-right">
-                  <a href="{{client.get_detail_client}}" class="btn btn-info">Detalle</a>
+                	{{o.admin_waterhole_outflow}}
                 </td>
               </tr>
             {% endfor %}  
             </tbody>
           </table>
         </div>
-        {% else %}
-        <h3>Necesitas ser administrador</h3>
-        {% endif %}
+    
       </div>
     </div>
   </div>
 </div>
 </div>
+
 {%endblock content%}

@@ -1,7 +1,7 @@
 from django import forms
-from .models import User,ClientProfile,WaterHoleProfile
+from .models import User,ClientProfile,WaterHoleProfile,ContractModel,AdressModel
 from django.forms.widgets import ClearableFileInput
-from waterhole.models import WaterHole
+from waterhole.models import WaterHole,ZoneModel
 
 
 
@@ -82,3 +82,43 @@ class AdminEditForm(forms.ModelForm):
 	class Meta:
 		model = WaterHoleProfile
 		fields = ('phone_number','photo_avatar',)
+
+
+#Formularios para contrato
+class ContractForm(forms.ModelForm):
+	ine_ide = forms.BooleanField(label="INE")
+	free_copaci = forms.BooleanField(label = "Liberación de Copaci")
+	formatt = forms.BooleanField(label = "Formato")
+	permission_adress = forms.BooleanField(label = "Permiso para calle")
+	cost = forms.DecimalField(label = "Costo:",widget =forms.TextInput(attrs={'placeholder':"0.00"}))
+	
+	
+	class Meta:
+		model = ContractModel
+		fields = ('ine_ide','free_copaci','formatt','permission_adress','cost','zone_waterhole')
+	
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields['zone_waterhole'].queryset = ZoneModel.objects.all()
+	
+class ContractRegistration(ContractForm):
+	zone_waterhole = forms.ChoiceField(choices=[],widget=forms.TextInput(attrs={'readonly':'True'}))
+
+	def __init__(self, *args, **kwargs):
+		super(ContractRegistration,self).__init__(*args,**kwargs)
+		self.fields['zone_waterhole'] = forms.ChoiceField(label="Seleccionar Zona:",choices=[(zone.id,zone.name) for zone in ZoneModel.objects.all()])
+
+	class Meta(ContractForm.Meta):
+		fields = ContractForm.Meta.fields + ('zone_waterhole',)
+
+class AdressForm(forms.ModelForm):
+	street = forms.CharField(label="Calle/Avenida:",widget=forms.TextInput(attrs={'placeholder':"nombre de la calle",}))
+	interior_number = forms.CharField(label="Número interior:",widget=forms.TextInput(attrs={'placeholder':"número interior de calle",}))
+	ext_number = forms.CharField(label="Numero exterior:",widget=forms.TextInput(attrs={'placeholder':"número exterior",}))
+	neighborhood = forms.CharField(label="Colonia:",widget=forms.TextInput(attrs={'placeholder':"colonia",}))
+	cp = forms.CharField(label="Código Postal:",widget=forms.TextInput(attrs={'placeholder':"código Postal",}))
+	delegation = forms.CharField(label="Municipio:",widget=forms.TextInput(attrs={'placeholder':"municipio",}))
+	state = forms.CharField(label="Estado:",widget=forms.TextInput(attrs={'placeholder':"estado",}))
+	class Meta:
+		model = AdressModel
+		fields = ('street','interior_number','ext_number','neighborhood','cp','delegation','state',)
