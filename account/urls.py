@@ -16,4 +16,6 @@ urlpatterns = [
 
 	#Pdf Urls
 	url(r'^pdf-contract/pdf/(?P<id_client>\w+)/$', views.PdfSection.contract_pdf, name='pdf_contract'),
+	#Url tickets
+	url(r'^generate-ticket/(?P<id_client>\w+)/$', views.GenerateTicket.as_view(), name='generate_ticket'),
 ]

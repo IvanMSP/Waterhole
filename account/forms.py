@@ -1,5 +1,5 @@
 from django import forms
-from .models import User,ClientProfile,WaterHoleProfile,ContractModel,AdressModel
+from .models import User,ClientProfile,WaterHoleProfile,ContractModel,AdressModel,Ticket
 from django.forms.widgets import ClearableFileInput
 from waterhole.models import WaterHole,ZoneModel
 
@@ -122,3 +122,11 @@ class AdressForm(forms.ModelForm):
 	class Meta:
 		model = AdressModel
 		fields = ('street','interior_number','ext_number','neighborhood','cp','delegation','state',)
+
+
+class TicketForm(forms.ModelForm):
+	cost = forms.CharField(label="Costo $:",widget=forms.TextInput(attrs={'placeholder':"Costo",}))
+	concept = forms.CharField(label="Concepto:",widget=forms.TextInput(attrs={'placeholder':"Concepto",}))
+	class Meta:
+		model = Ticket
+		fields = ('cost','concept',)

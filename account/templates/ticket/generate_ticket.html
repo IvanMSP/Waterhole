@@ -1,0 +1,26 @@
+{% load static %}
+{% load bootstrap%}
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Generar recibo</h3>
+        </div>
+        <div class="modal-body">
+                {% csrf_token %}
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {{ form_ticket|bootstrap }}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-lg-12 text-right">
+                        <input type="submit" class="btn btn-primary" name="submit" value="Guardar">
+                        <button type="button" class="btn btn-default" onclick="return cerrar_modal()">
+                            Cancelar
+                        </button>
+                </div>
+            </div>
+            </form>
+    </div>
+</div>

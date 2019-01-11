@@ -23,8 +23,8 @@
             <p class="description">{{client_profile.waterhole_client.name}}</p>
             <p class="description">{{client_profile.waterhole_client.address}}</p>
             <p>
-              <a href="{% url 'account:pdf_contract' client_profile.id %}" class="btn btn-info" target="_blank">Imprimir Contracto</a>
-              <a href="{% url 'account:pdf_contract' client_profile.id %}" class="btn btn-info" target="_blank">Recibo</a>
+              <a href="{% url 'account:pdf_contract' client_profile.id %}" class="btn btn-info" target="_blank">Imprimir Contrato</a>
+              <a onclick="return abrir_modal('{% url 'account:generate_ticket' client_profile.id%}')" class="btn btn-info" target="_blank">Generar Recibo</a>
             </p>
           </div>
         </div>
@@ -42,7 +42,7 @@
                               <a class="nav-link active" href="#home" data-toggle="tab">Datos Personales</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="#updates" data-toggle="tab">Dirección</a>
+                            <a class="nav-link" href="#updates" data-toggle="tab">Direción</a>
                           </li>
                           <li class="nav-item">
                             <a class="nav-link" href="#adress" data-toggle="tab">Historial de pagos</a>
@@ -62,7 +62,40 @@
                       {{form_adress|bootstrap}}
                   </div>
                   <div class="tab-pane" id="adress">
-                      <p>Aqui</p>
+                    <table class="table">
+                        <thead class=" text-primary">
+                          <th>
+                            Folio
+                          </th>
+                          <th>
+                            Fecha
+                          </th>
+                          <th>
+                            Costo
+                          </th>
+                          <th class="text-right">
+                            Ver Detalle
+                          </th>
+                        </thead>
+                        <tbody>
+                        {% for t in tickets %}
+                          <tr>
+                            <td>
+                              {{t.folio}}
+                            </td>
+                            <td>
+                              {{t.date}} 
+                            </td>
+                            <td>
+                              $ {{t.cost}}
+                            </td>
+                            <td class="text-right">
+                              <a href="#" class="btn btn-info">Imprimir</a>
+                            </td>
+                          </tr>
+                        {% endfor %}  
+                        </tbody>
+                      </table>  
                   </div>
                 
               </div>
@@ -75,4 +108,24 @@
     </div>
 </div>
 </div>
+<!--Abrir Modal Ticket-->
+<div id="popup" class="modal fade" role="dialog">
+
+</div>
+<script>
+  function abrir_modal(url)
+{
+        $('#popup').load(url, function()
+        {
+                $(this).modal('show');
+        });
+        return false;
+}
+
+function cerrar_modal()
+{
+        $('#popup').modal('hide');
+        return false;
+}
+</script>
 {%endblock content%}
