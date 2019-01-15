@@ -28,30 +28,9 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
-# Application definition
+Application definition
 
-# DJANGO_APPS = [
-# 	'django.contrib.admin',
-# 	'django.contrib.auth',
-# 	'django.contrib.contenttypes',
-# 	'django.contrib.sessions',
-# 	'django.contrib.messages',
-# 	'django.contrib.staticfiles',
-# 	'django.contrib.humanize',
-# ]
-
-# THIRD_PARTY_APPS = [
-# 	'bootstrapform',
-# ]
-
-# LOCAL_APPS = [
-# 	'account',
-# 	'waterhole',
-# 	'finanzas',
-# ]
-
-# INSTALLED_APPS = DJANGO_APPS +THIRD_PARTY_APPS + LOCAL_APPS
-INSTALLED_APPS = [
+DJANGO_APPS = [
 	'django.contrib.admin',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
@@ -59,11 +38,20 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'django.contrib.humanize',
+]
+
+THIRD_PARTY_APPS = [
 	'bootstrapform',
+]
+
+LOCAL_APPS = [
 	'account',
 	'waterhole',
 	'finanzas',
 ]
+
+INSTALLED_APPS = DJANGO_APPS +THIRD_PARTY_APPS + LOCAL_APPS
+
 
 MIDDLEWARE = [
 	'django.middleware.security.SecurityMiddleware',
@@ -105,13 +93,6 @@ DATABASES = {
     }
 }
 
-#Update database configuration with $DATABASE_URL.
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
 #Update database configuration with $DATABASE_URL.
 import dj_database_url
