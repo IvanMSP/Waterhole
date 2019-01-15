@@ -87,17 +87,21 @@ WSGI_APPLICATION = 'AguaPotable.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'd13th78kvg2sc4',
+#         'USER': 'zdkiekvnmwxqzl',
+#         'PASSWORD': '18fd4eebab5be2d1dab5562052e00ad381cbb0c77071c233dfc27fd305a99351',
+#         'HOST': 'ec2-54-235-77-0.compute-1.amazonaws.com',
+#         'PORT': '5432',
+#     }
+# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd13th78kvg2sc4',
-        'USER': 'zdkiekvnmwxqzl',
-        'PASSWORD': '18fd4eebab5be2d1dab5562052e00ad381cbb0c77071c233dfc27fd305a99351',
-        'HOST': 'ec2-54-235-77-0.compute-1.amazonaws.com',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
 }
-
 
 
 # Password validation
