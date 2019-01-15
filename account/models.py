@@ -96,6 +96,9 @@ class Ticket(models.Model):
 
 	def __str__(self):
 		return 'Usuario: {} - Folio: {}'.format(self.profile_client,self.folio)
+	
+	def get_ticket_id(self):
+		return reverse('account:pdf_ticket_id', args=[self.id,self.profile_client.id])
 
 		
 	

@@ -5,6 +5,8 @@
         <div class="modal-header">
             <h3>Generar recibo</h3>
         </div>
+        
+        <form role="form" action="{% url 'account:generate_ticket' client.id %}" method="post" enctype='multipart/form-data'>
         <div class="modal-body">
                 {% csrf_token %}
                 <div class="panel panel-default">
@@ -15,12 +17,12 @@
             </div>
             <div class="modal-footer">
                 <div class="col-lg-12 text-right">
-                        <input type="submit" class="btn btn-primary" name="submit" value="Guardar">
+                        <input type="submit" name="guardar" value="Guardar" class="btn btn-success" target="_blank">
                         <button type="button" class="btn btn-default" onclick="return cerrar_modal()">
                             Cancelar
                         </button>
                 </div>
             </div>
-            </form>
+        </form>
     </div>
 </div>

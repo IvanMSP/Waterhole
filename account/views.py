@@ -218,13 +218,32 @@ class RegistryClient(View):
 			return render(request,template_name,context)
 
 class GenerateTicket(View):
+	@method_decorator(login_required)
 	def get(self,request,id_client):
 		template_name = 'ticket/generate_ticket.html'
+		client = get_object_or_404(ClientProfile, id = id_client)
 		form_ticket = TicketForm()
 		context ={
 			'form_ticket':form_ticket,
+			'client':client,
 		}
 		return render(request,template_name,context)
+	
+	def post(self,request, id_client):
+		template_name = 'ticket/generate_ticket.html'
+		form_ticket = TicketForm(request.POST)
+		client = get_object_or_404(ClientProfile, id = id_client)
+		if form_ticket.is_valid():
+			new_ticket = form_ticket.save(commit = False)
+			new_ticket.profile_client = client
+			new_ticket.save()
+			return redirect('account:pdf_ticket_id', new_ticket.id, new_ticket.profile_client.id)
+		else:
+			form_ticket = TicketForm()
+			context = {
+				'form_ticket':form_ticket,
+			}
+			return render(request,template_name,context)
 
 #Se tiene que borrar solo es de prueba ACUERDATE CABRON
 class MainView(View):
@@ -248,5 +267,17 @@ class PdfSection(object):
 		html = render_to_string('pdfs/contract_pdf.html', {'client_profile':client_profile,'contract':contract,'waterhole':waterhole,'adress':adress,})
 		response = HttpResponse(content_type='application/pdf')
 		response['Content-Disposition'] = 'inline;filename="Contrato_pozo_cozotlan.pdf"'
+		weasyprint.HTML(string=html, base_url=request.build_absolute_uri()).write_pdf(response, stylesheets=[weasyprint.CSS(settings.STATIC_ROOT + '/css/pdf.css')])
+		return response
+	
+	def ticket_id_pdf(request, id_ticket,id_client):
+		ticket = get_object_or_404(Ticket, id = id_ticket)
+		profile_cl = get_object_or_404(ClientProfile, id = id_client)
+		contract = ContractModel.objects.get(user_profile = profile_cl)
+		address = AdressModel.objects.get(contract = contract)
+		waterhole = profile_cl.waterhole_client
+		html = render_to_string('pdfs/ticket_pdf.html', {'ticket':ticket,'profile_cl':profile_cl,'waterhole':waterhole,'contract':contract,'address':address,})
+		response = HttpResponse(content_type='application/pdf')
+		response['Content-Disposition'] = 'inline;filename="recibo.pdf"'
 		weasyprint.HTML(string=html, base_url=request.build_absolute_uri()).write_pdf(response, stylesheets=[weasyprint.CSS(settings.STATIC_ROOT + '/css/pdf.css')])
 		return response

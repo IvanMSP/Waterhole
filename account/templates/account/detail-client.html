@@ -24,7 +24,7 @@
             <p class="description">{{client_profile.waterhole_client.address}}</p>
             <p>
               <a href="{% url 'account:pdf_contract' client_profile.id %}" class="btn btn-info" target="_blank">Imprimir Contrato</a>
-              <a onclick="return abrir_modal('{% url 'account:generate_ticket' client_profile.id%}')" class="btn btn-info" target="_blank">Generar Recibo</a>
+              <a onclick="return abrir_modal('{% url 'account:generate_ticket' client_profile.id %}')" class="btn btn-info" target="_blank">Generar Recibo</a>
             </p>
           </div>
         </div>
@@ -90,7 +90,7 @@
                               $ {{t.cost}}
                             </td>
                             <td class="text-right">
-                              <a href="#" class="btn btn-info">Imprimir</a>
+                              <a href="{{t.get_ticket_id}}" target="_blank" class="btn btn-info">Imprimir</a>
                             </td>
                           </tr>
                         {% endfor %}  
