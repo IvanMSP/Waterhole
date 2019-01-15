@@ -97,6 +97,7 @@ WSGI_APPLICATION = 'AguaPotable.wsgi.application'
 #         'PORT': '5432',
 #     }
 # }
+import dj_database_url
 DATABASES = {
     'default': dj_database_url.config(
         default=config('DATABASE_URL')
