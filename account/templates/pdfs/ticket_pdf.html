@@ -1,0 +1,37 @@
+{%load static%}
+
+<html>
+	<body>
+
+		<div class="logos_axio"> 
+			<img src="{% static 'img/logo-pc.png' %}" alt="" style="width: 60px; ">
+        </div>
+        
+		<div class="cabecera">	
+            <p class="small">Recuperación para pago de luz y mantenimiento de la red de agua potable</p>
+            <p>{{waterhole.name}}</p>
+            <p class="small">Sistema Comunitario de Agua potable</p>
+			<hr>
+		</div>
+        <br>
+        <br>
+		<div class="waterhole">
+			<p><strong>Dirección:</strong> {{waterhole.address}}</p>	
+			<p><strong>Tel.Cel:</strong> {{waterhole.tel_cel_two}} </p>
+			<p><strong>Tel.Cel:</strong> {{waterhole.tel_cel_one}}</p>
+			<p><strong>Email:</strong> {{waterhole.email}}</p>
+		</div>
+		<br>
+        <br>
+        <div class="text">
+            <p><strong>Recibi de:</strong> {{profile_cl.user_client.first_name}} {{profile_cl.user_client.last_name}}</p>
+            <p><strong>Calle y número:</strong> {{address.street}} {{address.interior_number}} {{address.ext_number}}</p>
+            <p><strong>Colonia:</strong> {{address.neighborhood}}     <strong> No.Contrato:</strong> {{contract.number_register}}</p>
+            <p><strong>La cantidad de $:</strong> {{ticket.cost}}</p>
+            <p><strong>Concepto:</strong> {{ticket.concept}}</p>
+            <p>{{waterhole.address}} a  {{ticket.date}}</p>
+            <p><strong>Folio:</strong>{{ticket.folio}}</p>
+        </div>
+
+	</body>
+</html>

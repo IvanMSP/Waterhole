@@ -83,4 +83,22 @@ class AdressModel(models.Model):
 	def __str__(self):
 		return '{} - {} - {}'.format(self.contract.user_profile.user_client.username, self.street,self.neighborhood)
 
+class Ticket(models.Model):
+	
+	def get_folio():
+		return Ticket.objects.count() + 1
 
+	date = models.DateTimeField(auto_now_add = True)
+	cost = models.DecimalField(max_digits = 10, decimal_places = 2)
+	concept = models.TextField(blank=True, null=True)
+	folio = models.IntegerField(default = get_folio)
+	profile_client = models.ForeignKey(ClientProfile, related_name='contract',blank=True, null=True)
+
+	def __str__(self):
+		return 'Usuario: {} - Folio: {}'.format(self.profile_client,self.folio)
+	
+	def get_ticket_id(self):
+		return reverse('account:pdf_ticket_id', args=[self.id,self.profile_client.id])
+
+		
+	
