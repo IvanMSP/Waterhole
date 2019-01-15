@@ -97,12 +97,7 @@ WSGI_APPLICATION = 'AguaPotable.wsgi.application'
 #         'PORT': '5432',
 #     }
 # }
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+DATABASES = {}
 
 #Update database configuration with $DATABASE_URL.
 import dj_database_url
