@@ -4,12 +4,23 @@
 {% block content %}
 
 <div class="content">
-	<a href="{% url 'account:registry-client' %}">
-		<button class="btn btn-outline-primary btn-round">
-	  		<i class="fas fa-pen"></i> Registrar Cliente Nuevo
-		</button>
-	</a>
-
+  <div class="row">
+    <div class="col-md-6">
+      <a href="{% url 'account:registry-client' %}">
+        <button class="btn btn-outline-primary btn-round">
+          <i class="fas fa-pen"></i> Registrar Cliente Nuevo
+        </button>
+      </a>
+    </div>
+    <div class="col-md-6">
+      <form class="form-inline" method="GET" action="">
+          <div class="form-group mx-sm-3 mb-2">
+            <input type="text" class="form-control" placeholder="nombre,celular o apellidos" value='{{request.GET.q}}' name="q">
+          </div>
+          <button type="submit" class="btn btn-primary mb-2">Buscar</button>
+        </form>
+    </div>
+  </div>
 <div class="row">
   <div class="col-md-12">
     <div class="card">
@@ -45,7 +56,7 @@
               </th>
             </thead>
             <tbody>
-            {% for client in admin_waterhole.get_clients  %}
+            {% for client in clients  %}
               <tr>
                 <td>
                   <img src="{{ client.photo_avatar.url }}" class="img-responsive img-circle" width="50"></img>
@@ -71,6 +82,7 @@
         <h3>Necesitas ser administrador</h3>
         {% endif %}
       </div>
+      {% include "account/pagination.html" with page=clients %}
     </div>
   </div>
 </div>

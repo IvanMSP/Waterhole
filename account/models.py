@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.urlresolvers import reverse
 # Create your models here.
 from waterhole.models import WaterHole,ZoneModel
+
 import uuid
 
 class User(AbstractUser):
@@ -93,6 +94,7 @@ class Ticket(models.Model):
 	concept = models.TextField(blank=True, null=True)
 	folio = models.IntegerField(default = get_folio)
 	profile_client = models.ForeignKey(ClientProfile, related_name='contract',blank=True, null=True)
+	
 
 	def __str__(self):
 		return 'Usuario: {} - Folio: {}'.format(self.profile_client,self.folio)
