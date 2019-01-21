@@ -3,6 +3,7 @@ from django.views.generic import View
 from django.utils.decorators  import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 from .models import Earning,OutflowsModel
@@ -51,14 +52,22 @@ class ListEarning(View):
 	@method_decorator(login_required)
 	def get(self,request):
 		template_name = 'list-earnings.html'
-		earnigns = Earning.objects.all()
+		earnigns = Earning.objects.order_by('-date')
 		total = Earning.objects.aggregate(total=Sum('quantity'))['total']
+		paginator = Paginator(earnigns, 10) #de objectos
+		page = request.GET.get('page')
+		try:
+			earnings = paginator.page(page)
+		except PageNotAnInteger:
+			earnings = paginator.page(1)
+		except EmptyPage:
+			earnings = paginator.page(paginator.num_pages)
 		context ={
 			"earningactive":"active",
-			'earnigns':earnigns,
 			'total':total,
+			'earnings':earnings,
 		}
-		print('ingresos',earnigns)
+		
 		return render(request,template_name,context)
 
 #Visualizar Egresos
@@ -66,8 +75,16 @@ class ListOutflow(View):
 	@method_decorator(login_required)
 	def get(self,request):
 		template_name = 'list_outflows.html'
-		outflows = OutflowsModel.objects.all()
+		outflows = OutflowsModel.objects.order_by('-date')
 		total = OutflowsModel.objects.aggregate(total=Sum('quantity'))['total']
+		paginator = Paginator(outflows, 10) #de objectos
+		page = request.GET.get('page')
+		try:
+			outflows = paginator.page(page)
+		except PageNotAnInteger:
+			outflows = paginator.page(1)
+		except EmptyPage:
+			outflows = paginator.page(paginator.num_pages)
 		context ={
 			"outflow":"active",
 			'outflows':outflows,

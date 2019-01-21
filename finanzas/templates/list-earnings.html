@@ -48,7 +48,7 @@
               </th>
             </thead>
             <tbody>
-            {% for e in earnigns  %}
+            {% for e in earnings  %}
               <tr>
               	<td>
               	  {{e.number_registry}}
@@ -72,6 +72,7 @@
         </div>
     
       </div>
+      {% include "pagination.html" with page=earnings %}
     </div>
   </div>
 </div>

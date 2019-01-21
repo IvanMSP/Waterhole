@@ -60,6 +60,9 @@
                   </div>
                   <div class="tab-pane" id="updates">
                       {{form_adress|bootstrap}}
+                      <div class="text-right">
+                        <input type="submit" name="guardar" value="Guardar" class="btn btn-success">
+                      </div>
                   </div>
                   <div class="tab-pane" id="adress">
                     <table class="table">
@@ -78,7 +81,7 @@
                           </th>
                         </thead>
                         <tbody>
-                        {% for t in tickets %}
+                        {% for t in ticketss %}
                           <tr>
                             <td>
                               {{t.folio}}
@@ -95,12 +98,10 @@
                           </tr>
                         {% endfor %}  
                         </tbody>
-                      </table>  
-                  </div>
-                
-              </div>
-              <div class="text-right">
-                <input type="submit" name="guardar" value="Guardar" class="btn btn-success">
+                      </table>
+                      {% include 'ticket/paginattion.html' with page=ticketss %} 
+                      
+                  </div>  
               </div>
             </form>
           </div>

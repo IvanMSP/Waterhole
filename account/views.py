@@ -3,9 +3,10 @@ from django.views.generic import View
 from django.utils.decorators  import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import pdb
 
+from django.db.models import Q
 from .forms import (UserRegistrationForm,ClientRegistrationForm,ClientRegistration,
 					UserEditForm,AdminEditForm,ClientEditForm,ContractForm,ContractRegistration,AdressForm,TicketForm)
 from waterhole.models import WaterHole
@@ -88,10 +89,29 @@ class ListClient(View):
 		if user.is_admin_waterhole:
 			great = True
 			admin_waterhole= user.get_adminwaterhole_profile()
+			waterhole = admin_waterhole.waterhole_admin
+			object_list = ClientProfile.objects.filter(waterhole_client = waterhole).order_by('user_client')
+		query = request.GET.get("q")
+		if query:
+			object_list = object_list.filter(
+				Q(user_client__first_name__icontains = query)|
+				Q(phone_number__icontains = query)|
+				Q(user_client__last_name__icontains = query)
+				).distinct()
+		paginator = Paginator(object_list, 5) #de objectos
+		page = request.GET.get('page')
+		try:
+			clients = paginator.page(page)
+		except PageNotAnInteger:
+			clients = paginator.page(1)
+		except EmptyPage:
+			clients = paginator.page(paginator.num_pages)	
 		context = {
 			'great':great,
+			'page':page,
 			'admin_waterhole':admin_waterhole,
 			"mainclient":"active",
+			'clients':clients,
 		}
 		
 		return render(request,template_name,context)
@@ -107,8 +127,15 @@ class DetailClient(View):
 		form_client = UserEditForm(instance = client)
 		form_client_profile = ClientRegistrationForm(instance = client_profile)
 		form_adress = AdressForm(instance = adress)
-		tickets = Ticket.objects.all().filter(profile_client = client_profile)
-		
+		tickets = Ticket.objects.all().filter(profile_client = client_profile).order_by('-date')
+		paginator = Paginator(tickets, 10) #de objectos
+		page = request.GET.get('page')
+		try:
+			ticketss = paginator.page(page)
+		except PageNotAnInteger:
+			ticketss = paginator.page(1)
+		except EmptyPage:
+			ticketss = paginator.page(paginator.num_pages)
 		context = {
 			"mainclient":"active",
 			'client':client,
@@ -119,8 +146,40 @@ class DetailClient(View):
 			'contract':contract,
 			'adress':adress,
 			'tickets':tickets,
+			'ticketss':ticketss,
 		}
 		return render(request,template_name,context)
+	
+	def post(self,request,id_client,username_client):
+		template_name = 'account/detail-client.html'
+		client = get_object_or_404(User, id = id_client, username = username_client)
+		client_profile = client.get_client_profile()
+		contract = ContractModel.objects.get(user_profile = client_profile)
+		adress = AdressModel.objects.get(contract = contract)
+		form_client = UserEditForm(instance = client, data = request.POST, files = request.FILES)
+		form_client_profile = ClientRegistrationForm(instance = client_profile, data = request.POST, files = request.FILES)
+		form_adress = AdressForm(instance = adress,data = request.POST, files = request.FILES)
+		if form_client.is_valid() and form_client_profile.is_valid() and form_adress.is_valid():
+			form_client.save()
+			form_client_profile.save()
+			form_adress.save()
+			messages.success(self.request, 'Perfil Actualizado correctamente!')
+			return redirect('account:detail-client', client.id, client.username)
+		else:
+			context ={
+				"mainclient":"active",
+				'client':client,
+				'client_profile':client_profile,
+				'form_client':form_client,
+				'form_client_profile':form_client_profile,
+				'form_adress':form_adress,
+				'contract':contract,
+				'adress':adress,
+				
+			}
+			return render(request,template_name,context)
+		
+		
 
 class RegistryClient(View):
 	@method_decorator(login_required)
@@ -233,10 +292,19 @@ class GenerateTicket(View):
 		template_name = 'ticket/generate_ticket.html'
 		form_ticket = TicketForm(request.POST)
 		client = get_object_or_404(ClientProfile, id = id_client)
+		user = request.user
+		admin = user.get_adminwaterhole_profile()
 		if form_ticket.is_valid():
 			new_ticket = form_ticket.save(commit = False)
 			new_ticket.profile_client = client
 			new_ticket.save()
+
+			new_earning = Earning()
+			new_earning.admin_waterhole_earning = admin
+			new_earning.quantity = new_ticket.cost
+			new_earning.subject = new_ticket.concept
+			new_earning.save()
+
 			return redirect('account:pdf_ticket_id', new_ticket.id, new_ticket.profile_client.id)
 		else:
 			form_ticket = TicketForm()
