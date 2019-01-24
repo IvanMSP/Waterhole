@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load bootstrap%}
+{% load static %}
+{% load jsonify %}
+
+{% block content %}
+
+<div class="content">
+    <div id="contratos" ></div>
+</div>
+{% block graficas %}
+
+<script type="text/javascript">
+    Highcharts.chart('contratos', {
+        chart: {
+            type: 'cylinder',
+            options3d: {
+                enabled: true,
+                alpha: 10,
+                beta: 20,
+                depth: 80
+            }
+        },
+        title: {
+            text: 'Contratos'
+        },
+        subtitle: {
+            text: 'numero de contratos realizados'
+        },
+        xAxis: {
+            categories: {{months|jsonify}}, // Month List data as JSON data
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'numero de contratos'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: 'Contratos',
+            data: {{contract_list|jsonify}} // Centimeter List data as JSON data
+
+        }]
+    });
+</script>
+{% endblock graficas %}
+{% endblock content %}
+    

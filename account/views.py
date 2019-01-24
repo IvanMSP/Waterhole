@@ -6,7 +6,9 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import pdb
 
-from django.db.models import Q
+import json
+from django.http import JsonResponse
+from django.db.models import Count,Q
 from .forms import (UserRegistrationForm,ClientRegistrationForm,ClientRegistration,
 					UserEditForm,AdminEditForm,ClientEditForm,ContractForm,ContractRegistration,AdressForm,TicketForm)
 from waterhole.models import WaterHole
@@ -321,6 +323,34 @@ class MainView(View):
 			"dashboard":"active",
 		}
 		return render(request,template_name,context)
+
+
+######Graficas########
+class GraphView(View):
+	def get(self,request):
+		template_name = 'graph/graph_contract.html'
+		user = request.user
+		admin = user.get_adminwaterhole_profile()
+		waterhole = get_object_or_404(WaterHole, waterholadmin = admin)
+
+		conts = ContractModel.objects.filter(waterhole_admin = waterhole)
+		contracts = ContractModel.objects.annotate(num_contracts = Count('contract'))
+		months = ['enero','febrero','marzo','abril','mayo','junio','julio','septiembre','octubre','noviembre','diciembre']
+		pdb.set_trace()
+		contract_list = []
+		for contract in conts:
+			contract_list.append(contract.get_contracts())
+		
+		print('numero de contratos',contract_list)
+
+		context = {
+			"report":"active",
+			'contract_list':contract_list,
+			'months':months,
+			
+		}
+		return render(request,template_name,context)
+
 
 
 ##PDF SECTION#######################################################

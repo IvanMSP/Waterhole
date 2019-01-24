@@ -28,7 +28,6 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
-Application definition
 
 DJANGO_APPS = [
 	'django.contrib.admin',
@@ -42,6 +41,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
 	'bootstrapform',
+	'jsonify',
 ]
 
 LOCAL_APPS = [

@@ -20,4 +20,8 @@ urlpatterns = [
 	
 	#Url tickets
 	url(r'^generate-ticket/(?P<id_client>\d+)/$', views.GenerateTicket.as_view(), name='generate_ticket'),
+
+	#Url graphs
+	url(r'^reports-graph/$', views.GraphView.as_view(), name='report'),
+	
 ]

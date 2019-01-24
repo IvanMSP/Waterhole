@@ -71,6 +71,9 @@ class ContractModel(models.Model):
 	def __str__(self):
 		return '{} - {} '.format(self.user_profile.user_client.first_name, self.zone_waterhole.name)
 
+	def get_contracts(self):
+		return self.objects.all().count()
+
 class AdressModel(models.Model):
 	contract = models.ForeignKey(ContractModel,related_name='contract')
 	street = models.CharField(max_length = 120)
