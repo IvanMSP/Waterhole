@@ -100,7 +100,7 @@ class ListClient(View):
 				Q(phone_number__icontains = query)|
 				Q(user_client__last_name__icontains = query)
 				).distinct()
-		paginator = Paginator(object_list, 5) #de objectos
+		paginator = Paginator(object_list, 20) #de objectos
 		page = request.GET.get('page')
 		try:
 			clients = paginator.page(page)
@@ -332,22 +332,9 @@ class GraphView(View):
 		user = request.user
 		admin = user.get_adminwaterhole_profile()
 		waterhole = get_object_or_404(WaterHole, waterholadmin = admin)
-
-		conts = ContractModel.objects.filter(waterhole_admin = waterhole)
-		contracts = ContractModel.objects.annotate(num_contracts = Count('contract'))
-		months = ['enero','febrero','marzo','abril','mayo','junio','julio','septiembre','octubre','noviembre','diciembre']
-		pdb.set_trace()
-		contract_list = []
-		for contract in conts:
-			contract_list.append(contract.get_contracts())
-		
-		print('numero de contratos',contract_list)
-
 		context = {
 			"report":"active",
-			'contract_list':contract_list,
-			'months':months,
-			
+						
 		}
 		return render(request,template_name,context)
 
