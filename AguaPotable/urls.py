@@ -22,11 +22,13 @@ from django.conf.urls.static import static
 
 from account import urls as accountURLs
 from finanzas import urls as finanzasURLs
+from waterhole import urls as WaterholeURLs
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^account/', include(accountURLs, namespace="account")),
     url(r'^finance/', include(finanzasURLs, namespace="finance")),
+    url(r'^waterhole/', include(WaterholeURLs, namespace="waterhole")),
 
  	url(
         regex=r'^media/(?P<path>.*)$',

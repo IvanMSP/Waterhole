@@ -42,6 +42,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
 	'bootstrapform',
 	'jsonify',
+	'bootstrap4',
 ]
 
 LOCAL_APPS = [

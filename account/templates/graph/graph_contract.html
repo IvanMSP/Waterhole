@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load custom_tags %}
 {% load bootstrap%}
+{% load bootstrap4 %}
 {% load static %}
 {% load jsonify %}
 
@@ -13,7 +14,7 @@
             <div class="card text-center" style="width: 20rem;">
                 <div class="card-body">
                     <h4 class="card-title">Total de Contratos</h4>
-                    <h1 class="card-text">{% contract_number%}</h1>
+                    <h1 class="card-text"><span><i class="far fa-address-card"></i></span>{%contract_number%}</h1>
                     <a href="{% url 'account:list-client' %}" class="btn btn-primary">Ir a lista de Clientes</a>
                 </div>
             </div>
@@ -23,7 +24,7 @@
             <div class="card text-center" style="width: 20rem;">
                 <div class="card-body">
                     <h4 class="card-title">Total de Ingresos</h4>
-                    <h1 class="card-text">$ {%total_earnings%}</h1>
+                    <h1 class="card-text"><span><i class="far fa-money-bill-alt"></i></span> ${%total_earnings%}</h1>
                     <a href="{% url 'finance:ingresos' %}" class="btn btn-primary">Ir a Ingresos</a>
                 </div>
             </div>
@@ -33,23 +34,46 @@
             <div class="card text-center" style="width: 20rem;">
                 <div class="card-body">
                     <h4 class="card-title">Total de Egresos</h4>
-                    <h1 class="card-text">$ {%total_outflows%}</h1>
+                    <h1 class="card-text"><span><i class="fas fa-file-invoice-dollar"></i></span> $ {%total_outflows%}</h1>
                     <a href="{% url 'finance:egresos' %}" class="btn btn-primary">Ir a Egresos</a>
                 </div>
             </div>
         </div>
-        
-        <div class="col-md-4 col-3">
-            <div class="card text-center" style="width: 20rem;">
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title"> Reporte por fecha</h4>
+                </div>
                 <div class="card-body">
-                    <h4 class="card-title">Diferencia</h4>
-                    <h1 class="card-text">$ {%dif_earnings%}</h1>
-                    <!-- <a href="{% url 'finance:egresos' %}" class="btn btn-primary">Ir a Egresos</a> -->
+                    <form action="." method="POST">
+                        {%csrf_token%}
+                        {% bootstrap_form form_date %}
+                        <p>
+                            <div class="text-center">
+                                <input type="submit" value="Generar Reporte" name="reporte" class="btn btn-primary" target="_blank">
+                            </div>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title"> Resultados</h4>
+                </div>
+                <div class="card-body">
+                    <h2><span><i class="far fa-address-card"></i></span>: {{contracts}}</h2>
+                    <h2><span><i class="far fa-money-bill-alt"></i></span>: ${{total_ing}}</h2>
+                    <h2><span><i class="fas fa-file-invoice-dollar"></i></span>: ${{egresos}}</h2 >
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 {% endblock content %}
     

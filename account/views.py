@@ -8,13 +8,17 @@ import pdb
 
 import json
 from django.http import JsonResponse
+from django.core import serializers
+
 from django.db.models import Count,Q
+from decimal import Decimal
+from django.db.models import Sum
 from .forms import (UserRegistrationForm,ClientRegistrationForm,ClientRegistration,
-					UserEditForm,AdminEditForm,ClientEditForm,ContractForm,ContractRegistration,AdressForm,TicketForm)
+					UserEditForm,AdminEditForm,ClientEditForm,ContractForm,ContractRegistration,AdressForm,TicketForm,DateReportsFields)
 from waterhole.models import WaterHole
 from .models import User,ClientProfile,WaterHoleProfile,ContractModel,AdressModel,Ticket
 from waterhole.models import ZoneModel
-from finanzas.models import Earning
+from finanzas.models import Earning,OutflowsModel
 # Codigó para utilizar weasy print
 from django.conf import settings
 from django.http import HttpResponse
@@ -329,15 +333,24 @@ class MainView(View):
 class GraphView(View):
 	def get(self,request):
 		template_name = 'graph/graph_contract.html'
-		user = request.user
-		admin = user.get_adminwaterhole_profile()
-		waterhole = get_object_or_404(WaterHole, waterholadmin = admin)
+		form_date = DateReportsFields()
 		context = {
 			"report":"active",
+			'form_date':form_date,
 						
 		}
 		return render(request,template_name,context)
 
+	def post(self,request):
+		template_name = 'graph/graph_contract.html'
+		form_date = DateReportsFields(request.POST)
+		if form_date.is_valid():
+			form = form_date.cleaned_data
+			contracts = ContractModel.objects.filter(date_register__range =(form['fecha_ini'], form['fecha_fin'])).count()
+			total_ing = Earning.objects.filter(date__range=(form['fecha_ini'], form['fecha_fin'])).aggregate(total=Sum('quantity'))['total']
+			egresos = OutflowsModel.objects.filter(date__range=(form['fecha_ini'], form['fecha_fin'])).aggregate(total=Sum('quantity'))['total']
+		data ={"report":"active",'form_date': form_date, 'contracts':contracts,'total_ing':total_ing,'egresos':egresos,}
+		return render(request,template_name,data)
 
 
 ##PDF SECTION#######################################################
@@ -361,7 +374,8 @@ class PdfSection(object):
 		contract = ContractModel.objects.get(user_profile = profile_cl)
 		address = AdressModel.objects.get(contract = contract)
 		waterhole = profile_cl.waterhole_client
-		html = render_to_string('pdfs/ticket_pdf.html', {'ticket':ticket,'profile_cl':profile_cl,'waterhole':waterhole,'contract':contract,'address':address,})
+		comitte = waterhole.waterhole_comitte
+		html = render_to_string('pdfs/ticket_pdf.html', {'ticket':ticket,'profile_cl':profile_cl,'waterhole':waterhole,'contract':contract,'address':address,'comitte':comitte,})
 		response = HttpResponse(content_type='application/pdf')
 		response['Content-Disposition'] = 'inline;filename="recibo.pdf"'
 		weasyprint.HTML(string=html, base_url=request.build_absolute_uri()).write_pdf(response, stylesheets=[weasyprint.CSS(settings.STATIC_ROOT + '/css/pdf.css')])

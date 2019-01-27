@@ -2,7 +2,7 @@ from django import forms
 from .models import User,ClientProfile,WaterHoleProfile,ContractModel,AdressModel,Ticket
 from django.forms.widgets import ClearableFileInput
 from waterhole.models import WaterHole,ZoneModel
-
+from datetime import datetime, date, time, timedelta
 
 
 class UserRegistrationForm(forms.ModelForm):
@@ -130,3 +130,14 @@ class TicketForm(forms.ModelForm):
 	class Meta:
 		model = Ticket
 		fields = ('cost','concept',)
+
+
+#Form for reports
+from bootstrap3_datetime.widgets import DateTimePicker
+
+class DateReportsFields(forms.Form):
+	fecha_ini = forms.DateField(label="Fecha Inicial", widget = forms.SelectDateWidget)
+	fecha_fin = forms.DateField(label="Fecha Final", initial = datetime.now().date(), widget = forms.SelectDateWidget)
+
+	
+	
